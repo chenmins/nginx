@@ -4,8 +4,7 @@ RUN useradd  www -u 1200 -M -s /sbin/nologin
 RUN mkdir -p /var/log/nginx && mkdir /nginx
 ADD replace-filter-nginx-module.tar.gz /nginx/
 ADD nginx-1.14.2.tar.gz /nginx/
-RUN unzip /nginx/sregex-master.zip -d /nginx/
-RUN unzip sregex-master.zip -d /nginx/ && \
+RUN unzip /nginxsregex-master.zip -d /nginx/ && \
     cd /nginx/sregex-master && make && make install && \
     cd ../ && ln -sv /usr/local/lib/libsregex.so.0.0.1 /lib64/libsregex.so.0
 WORKDIR /nginx/nginx-1.14.2
