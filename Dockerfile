@@ -7,7 +7,7 @@ RUN yum install -y cmake pcre pcre-devel openssl openssl-devel gd-devel \
     zlib-devel gcc gcc-c++ net-tools iproute telnet wget curl &&\
     yum clean all && \
     rm -rf /var/cache/yum/*
-ADD nginx-1.14.2.tar.gz
+ADD nginx-1.14.2.tar.gz .
 RUN tar xf nginx-1.14.2.tar.gz
 WORKDIR nginx-1.14.2
 RUN ./configure --prefix=/usr/local/nginx --with-http_image_filter_module --user=www --group=www \
