@@ -1,4 +1,4 @@
-FROM centos:7.2.1511
+FROM chenmins/nginx:dev
 LABEL maintainer Chenmin
 RUN useradd  www -u 1200 -M -s /sbin/nologin
 RUN mkdir -p /var/log/nginx
@@ -7,10 +7,6 @@ ADD replace-filter-nginx-module.tar.gz .
 RUN tar xf replace-filter-nginx-module.tar.gz
 ADD nginx-1.14.2.tar.gz .
 RUN tar xf nginx-1.14.2.tar.gz
-RUN yum install -y cmake pcre pcre-devel openssl openssl-devel gd-devel \
-    zlib-devel gcc gcc-c++ net-tools iproute telnet wget curl &&\
-    yum clean all && \
-    rm -rf /var/cache/yum/*
 WORKDIR nginx-1.14.2
 RUN ./configure --prefix=/usr/local/nginx --with-http_image_filter_module --user=www --group=www \
     --with-http_ssl_module --with-http_v2_module --with-http_stub_status_module \
