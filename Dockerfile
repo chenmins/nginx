@@ -4,7 +4,9 @@ RUN useradd  www -u 1200 -M -s /sbin/nologin && mkdir -p /var/log/nginx && mkdir
 ADD replace-filter-nginx-module.tar.gz /nginx/
 ADD nginx-1.14.2.tar.gz /nginx/
 ADD sregex-master.zip /nginx/
+ADD ngx_http_substitutions_filter_module-master.zip /nginx/
 RUN unzip /nginx/sregex-master.zip -d /nginx/ && \
+	unzip /nginx/ngx_http_substitutions_filter_module-master.zip -d /nginx/ && \
     cd /nginx/sregex-master && make && make install && \
     cd ../ && ln -sv /usr/local/lib/libsregex.so.0.0.1 /lib64/libsregex.so.0
 WORKDIR /nginx/nginx-1.14.2
@@ -22,7 +24,8 @@ RUN ./configure --prefix=/usr/local/nginx --user=www --group=www --pid-path=/var
     --with-stream_ssl_preread_module \
     --with-cc-opt='-O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector-strong --param=ssp-buffer-size=4 -grecord-gcc-switches -m64 -mtune=generic -fPIC' \
     --with-ld-opt='-Wl,-z,relro -Wl,-z,now -pie' \
-    --add-module=/nginx/replace-filter-nginx-module
+    --add-module=/nginx/replace-filter-nginx-module \
+    --add-module=/nginx/ngx_http_substitutions_filter_module-master
 RUN make -j 4 && make install && \
     rm -rf /usr/local/nginx/html/*  && \
     echo "Chenmin hello" >/usr/local/nginx/html/index.html  && \
