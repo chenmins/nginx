@@ -9,7 +9,7 @@ RUN unzip /nginx/sregex-master.zip -d /nginx/ && \
     cd /nginx/sregex-master && make && make install && \
     cd ../ && ln -sv /usr/local/lib/libsregex.so.0.0.1 /lib64/libsregex.so.0
 RUN useradd nginx -u 1200 -M -s /sbin/nologin && \
-	mkdir -p /var/log/nginx && mkdir /nginx && \
+	mkdir -p /var/log/nginx && \
 	mkdir -p /var/cache/nginx 
 WORKDIR /nginx/nginx-1.14.2
 RUN ./configure --prefix=/usr/local/nginx --user=www --group=www --pid-path=/var/run/nginx/nginx.pid \
