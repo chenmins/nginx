@@ -1,6 +1,5 @@
 FROM chenmins/nginx:dev
 LABEL maintainer Chenmin
-RUN useradd nginx -u 1200 -M -s /sbin/nologin && mkdir -p /var/log/nginx && mkdir /nginx
 ADD replace-filter-nginx-module.tar.gz /nginx/
 ADD nginx-1.14.2.tar.gz /nginx/
 ADD sregex-master.zip /nginx/
@@ -9,6 +8,9 @@ RUN unzip /nginx/sregex-master.zip -d /nginx/ && \
 	unzip /nginx/ngx_http_substitutions_filter_module-master.zip -d /nginx/ && \
     cd /nginx/sregex-master && make && make install && \
     cd ../ && ln -sv /usr/local/lib/libsregex.so.0.0.1 /lib64/libsregex.so.0
+RUN useradd nginx -u 1200 -M -s /sbin/nologin && \
+	mkdir -p /var/log/nginx && mkdir /nginx && \
+	mkdir -p /var/cache/nginx 
 WORKDIR /nginx/nginx-1.14.2
 RUN ./configure --prefix=/usr/local/nginx --user=www --group=www --pid-path=/var/run/nginx/nginx.pid \
     --modules-path=/usr/lib64/nginx/modules --error-log-path=/var/log/nginx/error.log \
@@ -33,7 +35,7 @@ RUN make -j 4 && make install && \
     ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime &&\
     ln -sf /dev/stdout /var/log/nginx/access.log && \
     ln -sf /dev/stderr /var/log/nginx/error.log
-RUN chown -R nginx.nginx /var/log/nginx
+RUN chown -R nginx.nginx /var/log/nginx && chown -R nginx.nginx /var/cache/nginx
 ENV LOG_DIR /var/log/nginx
 ENV PATH $PATH:/usr/local/nginx/sbin
 EXPOSE 80
