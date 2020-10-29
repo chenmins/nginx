@@ -1,6 +1,6 @@
 FROM chenmins/nginx:dev
 LABEL maintainer Chenmin
-RUN useradd  www -u 1200 -M -s /sbin/nologin && mkdir -p /var/log/nginx && mkdir /nginx
+RUN useradd nginx -u 1200 -M -s /sbin/nologin && mkdir -p /var/log/nginx && mkdir /nginx
 ADD replace-filter-nginx-module.tar.gz /nginx/
 ADD nginx-1.14.2.tar.gz /nginx/
 ADD sregex-master.zip /nginx/
@@ -33,7 +33,7 @@ RUN make -j 4 && make install && \
     ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime &&\
     ln -sf /dev/stdout /var/log/nginx/access.log && \
     ln -sf /dev/stderr /var/log/nginx/error.log
-RUN chown -R www.www /var/log/nginx
+RUN chown -R nginx.nginx /var/log/nginx
 ENV LOG_DIR /var/log/nginx
 ENV PATH $PATH:/usr/local/nginx/sbin
 EXPOSE 80
